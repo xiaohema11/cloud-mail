@@ -20,10 +20,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          # 删掉 cache: 'pnpm' 这一行，避免强制检查锁文件
 
       - name: 安装依赖 / Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 禁用 Wrangler 遥测 / Disable wrangler telemetry
         run: pnpm wrangler telemetry disable
