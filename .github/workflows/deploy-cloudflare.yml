@@ -9,7 +9,7 @@ jobs:
     name: Build and Deploy
     defaults:
       run:
-        working-directory: mail-worker  # 全局设置工作目录
+        working-directory: mail-worker
     steps:
       - name: 检出代码仓库 / Checkout repository
         uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
       - name: 设置 Node.js / Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: 安装依赖 / Install dependencies
         run: pnpm install --no-frozen-lockfile
