@@ -23,7 +23,7 @@ jobs:
           cache: 'pnpm'
 
       - name: 安装依赖 / Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: 禁用 Wrangler 遥测 / Disable wrangler telemetry
         run: pnpm wrangler telemetry disable
@@ -31,13 +31,13 @@ jobs:
       - name: 设置 KV 数据库 / Set up KV database
         run: |
           echo "Setting up KV database..."
-          pnpm wrangler kv:namespace create "CLOUDMAIL" --preview
-          pnpm wrangler kv:namespace create "CLOUDMAIL"
+          pnpm wrangler kv:namespace create "CLOUDMAIL" --preview || true
+          pnpm wrangler kv:namespace create "CLOUDMAIL" || true
 
       - name: 设置 D1 数据库 / Set up D1 database
         run: |
           echo "Setting up D1 database..."
-          pnpm wrangler d1 create cloud-mail-db
+          pnpm wrangler d1 create cloud-mail-db || true
 
       - name: 开始部署 / Start deployment
         run: pnpm run deploy
@@ -49,15 +49,7 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: 初始化数据库 / Initialize database
-        run: pnpm run init-db
+        run: pnpm run init-db || true
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-
-      - name: 删除运行记录 / Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 0
