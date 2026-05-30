@@ -7,6 +7,9 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     name: Build and Deploy
+    defaults:
+      run:
+        working-directory: mail-worker  # 全局设置工作目录
     steps:
       - name: 检出代码仓库 / Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # 删掉 cache: 'pnpm' 这一行，避免强制检查锁文件
 
       - name: 安装依赖 / Install dependencies
         run: pnpm install --no-frozen-lockfile
